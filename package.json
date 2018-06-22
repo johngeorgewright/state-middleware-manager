@@ -1,7 +1,7 @@
 {
   "name": "state-middleware-manager",
   "version": "0.0.0",
-  "description": "State accumulating middleware manager",
+  "description": "State accumulating/reducing middleware manager",
   "main": "dist/index.js",
   "scripts": {
     "build": "cross-env NODE_ENV=build rollup --config rollup.config.js",
