@@ -50,7 +50,7 @@ const middleware1 = (state, next) =>
 const middleware2 = (state, next) =>
   next({ ...state, mung: 'face' })
 
-accumulator([ middleware1, middleware2 ])
+accumulator([ middleware1, middleware2 ])({})
   .then(state => {
     expect(state).toEqual({
       foo: 'bar',
