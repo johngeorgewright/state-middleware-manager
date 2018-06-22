@@ -2,7 +2,7 @@
 > State accumulating and reducing middleware manager
 
 ## Installation
-Currently from github until I can decide on a better name.
+Install and build from github until I can decide on a better name.
 
 ```
 npm install johngeorgewright/state-middleware-manager
@@ -20,11 +20,15 @@ state.
 ```javascript
 import { accumulator } from 'state-middleware-manager'
 
-const middleware1 = (state, next) =>
-  next({ foo: 'bar' })
+const middleware1 = (state, next) => {
+  expect(state).toEqual({})
+  return next({ foo: 'bar' })
+}
 
-const middleware2 = (state, next) =>
-  next({ mung: 'face' })
+const middleware2 = (state, next) => {
+  expect(state).toEqual({ foo: 'bar '})
+  return next({ mung: 'face' })
+}
 
 accumulator([ middleware1, middleware2 ])()
   .then(state => {
@@ -45,20 +49,57 @@ property to the next function.
 ```javascript
 import { reducer } from 'state-middleware-manager'
 
-const middleware1 = (state, next) =>
-  next({ ...state, foo: 'bar' })
+const middleware1 = (state, next) => {
+  expect(state).toEqual({ start: true })
+  return next({ foo: 'bar' })
+}
 
-const middleware2 = (state, next) =>
-  next({ ...state, mung: 'face' })
+const middleware2 = (state, next) => {
+  expect(state).toEqual({ foo: 'bar' })
+  return next({ mung: 'face' })
+}
 
-accumulator([ middleware1, middleware2 ])({})
+accumulator([ middleware1, middleware2 ])({ start: true })
   .then(state => {
-    expect(state).toEqual({
-      foo: 'bar',
-      mung: 'face'
-    })
+    expect(state).toEqual({ mung: 'face' })
   })
 ```
 
-This is useful when you're happy that any middleware can completely change the
-format of the state. The state can also be any type you fancy.
+This is useful when you're happy that any middleware can change the format of
+the state. The state can also be any type you fancy.
+
+## Middleware
+All middleware should return a promise and the `next()` function will return the
+final promise.
+
+### Examples of middleware
+```javascript
+export async function logger (input, next) {
+  console.log('--->', JSON.stringify(input))
+
+  const output = await next()
+  console.log('<---', JSON.stringify(output))
+}
+```
+
+```javascript
+import { getUser } from 'my-date-store'
+
+export async function accumulateUser (state, next) {
+  if (state.userId) {
+    const user = await getUser(state.userId)
+    return next({ user })
+  } else {
+    return next()
+  }
+}
+
+export async function addUser (state, next) {
+  if (state.userId) {
+    const user = await getUser(state.userId)
+    return next({ ...state, user })
+  } else {
+    return next()
+  }
+}
+```
