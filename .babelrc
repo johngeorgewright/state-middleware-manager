@@ -1,0 +1,19 @@
+{
+  "env": {
+    "build": {
+      "plugins": [
+        "external-helpers"
+      ],
+      "presets": [
+        ["env", {
+          "modules": false
+        }]
+      ],
+      "sourceMaps": true
+    },
+    "test": {
+      "presets": ["env"],
+      "sourceMaps": true
+    }
+  }
+}
