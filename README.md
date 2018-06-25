@@ -2,8 +2,6 @@
 > State accumulating and reducing middleware manager
 
 ## Installation
-Install and build from github until I can decide on a better name.
-
 ```
 npm install state-middleware-manager
 ```
