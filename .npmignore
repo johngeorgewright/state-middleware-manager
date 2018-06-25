@@ -1,2 +1,4 @@
 *.log
+__helpers__
 node_modules
+__tests__
