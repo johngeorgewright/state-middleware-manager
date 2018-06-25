@@ -1,19 +1,17 @@
 {
-  "env": {
-    "build": {
-      "plugins": [
-        "external-helpers"
-      ],
-      "presets": [
-        ["env", {
-          "modules": false
-        }]
-      ],
-      "sourceMaps": true
-    },
-    "test": {
-      "presets": ["env"],
-      "sourceMaps": true
-    }
-  }
+  "presets": [
+    ["env", {
+      "targets": {
+        "browsers": [
+          "chrome >= 61",
+          "safari >=8",
+          "edge >= 14",
+          "ff >= 57",
+          "ie >= 10",
+          "ios >= 8"
+        ]
+      }
+    }]
+  ],
+  "sourceMaps": true
 }
