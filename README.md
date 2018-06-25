@@ -1,12 +1,14 @@
 # state-middleware-manager
 > State accumulating and reducing middleware manager
 
-## Installation
-Install and build from github until I can decide on a better name.
+[![Build Status](https://img.shields.io/travis/johngeorgewright/state-middleware-manager/master.svg?style=flat-square)](https://travis-ci.org/johngeorgewright/state-middleware-manager)
+[![NPM Version](https://img.shields.io/npm/v/state-middleware-manager.svg?style=flat-square)](https://www.npmjs.com/package/state-middleware-manager)
+[![Greenkeeper badge](https://badges.greenkeeper.io/johngeorgewright/state-middleware-manager.svg)](https://greenkeeper.io/)
+[![License](https://img.shields.io/npm/l/state-middleware-manager.svg?style=flat-square)](https://github.com/johngeorgewright/state-middleware-manager/blob/master/LICENSE)
 
+## Installation
 ```
-npm install johngeorgewright/state-middleware-manager
-npm --prefix node_modules/state-middleware-manager run build
+npm install state-middleware-manager
 ```
 
 ## State manager types
