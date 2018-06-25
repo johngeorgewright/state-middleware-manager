@@ -5,8 +5,7 @@
 Install and build from github until I can decide on a better name.
 
 ```
-npm install johngeorgewright/state-middleware-manager
-npm --prefix node_modules/state-middleware-manager run build
+npm install state-middleware-manager
 ```
 
 ## State manager types
