@@ -1,6 +1,6 @@
 {
   "name": "state-middleware-manager",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "State accumulating/reducing middleware manager",
   "main": "dist/index.js",
   "scripts": {
