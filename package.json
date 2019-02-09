@@ -4,28 +4,23 @@
   "description": "State accumulating/reducing middleware manager",
   "main": "dist/index.js",
   "scripts": {
-    "build": "babel --out-dir dist src",
+    "build": "tsc --project .",
     "clean": "rm -rf dist",
-    "lint": "eslint .",
+    "lint": "tslint --project . --fix",
     "prepublishOnly": "npm run clean && npm run build",
     "pretest": "npm run lint",
-    "start": "concurrently --prefix '[{name}]' --prefix-colors 'bgBlue.bold,bgMagenta.bold' -n 'build,test' 'npm run build -- --watch' 'npm run test -- --watchAll'",
+    "start": "concurrently --prefix name --prefix-colors bgBlue.bold,bgMagenta.bold -n build,test 'npm run build -- --watch' 'npm run test -- --watchAll'",
     "test": "jest"
   },
   "author": "MOL Ads <MOLAds@mailonline.co.uk>",
   "license": "MIT",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-jest": "^23.0.1",
-    "babel-preset-env": "^1.7.0",
-    "concurrently": "^3.6.0",
-    "cross-env": "^5.2.0",
-    "eslint": "^4.19.1",
-    "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.12.0",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.8.0",
-    "eslint-plugin-standard": "^3.1.0",
-    "jest": "^23.1.0"
+    "@types/jest": "^24.0.0",
+    "concurrently": "^4.1.0",
+    "jest": "^24.1.0",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.12.1",
+    "tslint-config-standard": "^8.0.1",
+    "typescript": "^3.3.3"
   }
 }

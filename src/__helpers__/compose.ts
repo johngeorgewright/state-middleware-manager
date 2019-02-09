@@ -1,17 +1,18 @@
-/* eslint-env jest */
-
 import { timeout } from './async'
+import reducer from '../reducer'
+import accumulator from '../accumulator'
+import { Middleware } from '../types'
 
-export default function (compose) {
-  it('returns a function', () => {
-    expect(compose([])).toBeInstanceOf(Function)
-  })
+interface State {
+  foo?: any
+}
 
+export default function (compose: typeof reducer | typeof accumulator) {
   it('waits until all middleware has resolved', async () => {
     const spyA = jest.fn()
     const spyB = jest.fn()
 
-    const middleware = [
+    const middleware: Middleware<State>[] = [
       async (_, next) => {
         await timeout(10)
         spyA()
@@ -24,7 +25,7 @@ export default function (compose) {
       }
     ]
 
-    await compose(middleware)()
+    await compose<State>(middleware)({})
 
     expect(spyA).toHaveBeenCalled()
     expect(spyB).toHaveBeenCalled()
@@ -34,7 +35,7 @@ export default function (compose) {
     const spyA = jest.fn()
     const spyB = jest.fn()
 
-    const middleware = [
+    const middleware: Middleware<State>[] = [
       async (_, next) => {
         await timeout(0)
         spyA()
@@ -49,18 +50,19 @@ export default function (compose) {
       }
     ]
 
-    return compose(middleware)()
+    return compose<State>(middleware)({})
   })
 
   it('can change order by calling next early', async () => {
     const spyA = jest.fn()
     const spyB = jest.fn()
 
-    const middleware = [
+    const middleware: Middleware<State>[] = [
       async (_, next) => {
-        await next()
+        const state = await next()
         expect(spyB).toHaveBeenCalled()
         spyA()
+        return state
       },
       (_, next) => {
         expect(spyA).not.toHaveBeenCalled()
@@ -69,7 +71,7 @@ export default function (compose) {
       }
     ]
 
-    await compose(middleware)()
+    await compose<State>(middleware)({})
 
     expect(spyA).toHaveBeenCalled()
   })
@@ -78,39 +80,30 @@ export default function (compose) {
     const arg1 = {}
     const arg2 = jest.fn()
 
-    const middleware = [
-      ($1, $2, _, next) => {
+    const middleware: Middleware<State>[] = [
+      (_, next, $1, $2) => {
         expect($1).toBe(arg1)
         expect($2).toBe(arg2)
         return next()
       },
-      ($1, $2, _, next) => {
+      (_, next, $1, $2) => {
         expect($1).toBe(arg1)
         expect($2).toBe(arg2)
         return next()
       }
     ]
 
-    return compose(middleware, [arg1, arg2])()
+    return compose<State>(middleware, [arg1, arg2])({})
   })
 
   it('accepts an initial state', () => {
-    const middleware = [
+    const middleware: Middleware<State>[] = [
       (state, next) => {
         expect(state).toEqual({ foo: 'bar' })
         return next()
       }
     ]
 
-    return compose(middleware)({ foo: 'bar' })
-  })
-
-  it('accepts a final function', async () => {
-    const spy = jest.fn()
-    const state = {}
-
-    await compose()(state, spy)
-
-    expect(spy).toHaveBeenCalledWith(state)
+    return compose<State>(middleware)({ foo: 'bar' })
   })
 }
