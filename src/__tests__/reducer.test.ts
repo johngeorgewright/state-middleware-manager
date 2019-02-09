@@ -1,13 +1,17 @@
-/* eslint-env jest */
-
-import compose from '../src/reducer'
+import compose from '../reducer'
 import testComposer from '../__helpers__/compose'
+
+interface State {
+  bar?: string
+  foo?: string
+  mung?: string
+}
 
 describe('reducer', () => {
   testComposer(compose)
 
   it('overrides the state with whatever\'s passed to next()', () => {
-    const middleware = [
+    return compose<State>([
       (_, next) =>
         next({ foo: 'bar' }),
       (state, next) => {
@@ -18,20 +22,16 @@ describe('reducer', () => {
         expect(state).toEqual({ mung: 'face' })
         return next()
       }
-    ]
-
-    return compose(middleware)()
+    ])({})
   })
 
   it('throws an error when you attempt to mutate the state', () => {
-    const middleware = [
+    return expect(compose<State>([
       (state, next) => {
         state.foo = 'bar'
         return next(state)
       }
-    ]
-
-    return expect(compose(middleware)({ bar: 'foo' })).rejects.toThrow(
+    ])({ bar: 'foo' })).rejects.toThrow(
       'State should be immutable. Either pass a new object or nothing to next().'
     )
   })
