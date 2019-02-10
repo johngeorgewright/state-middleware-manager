@@ -1,4 +1,4 @@
-import { Middleware, Next } from './types'
+import { Middleware } from './types'
 
 export default <State>(middleware: Middleware<State>[] = [], middlewareArgs: any[] = []) =>
   (state: Readonly<State>): Promise<State> => {
@@ -6,11 +6,11 @@ export default <State>(middleware: Middleware<State>[] = [], middlewareArgs: any
 
     const dispatch = async (i: number, nextState?: Readonly<State>): Promise<State> => {
       if (i <= index) {
-        return Promise.reject(new Error('next() called multiple times'))
+        throw new Error('next() called multiple times')
       }
 
       if (typeof nextState === 'object' && nextState === state) {
-        return Promise.reject(new Error('State should be immutable. Either pass a new object or nothing to next().'))
+        throw new Error('State should be immutable. Either pass a new object or nothing to next().')
       } else if (nextState) {
         state = nextState
       }
@@ -18,15 +18,10 @@ export default <State>(middleware: Middleware<State>[] = [], middlewareArgs: any
       index = i
 
       if (i === middleware.length) {
-        return Promise.resolve(state)
+        return state
       }
 
-      try {
-        const result = middleware[i](state, dispatch.bind(null, i + 1), ...middlewareArgs)
-        return Promise.resolve(result)
-      } catch (err) {
-        return Promise.reject(err)
-      }
+      return middleware[i](state, dispatch.bind(null, i + 1), ...middlewareArgs)
     }
 
     return dispatch(0)

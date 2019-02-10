@@ -1,6 +1,6 @@
 {
   "name": "state-middleware-manager",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "description": "State accumulating/reducing middleware manager",
   "main": "dist/index.js",
   "scripts": {
@@ -10,7 +10,8 @@
     "prepublishOnly": "npm run clean && npm run build",
     "pretest": "npm run lint",
     "start": "concurrently --prefix name --prefix-colors bgBlue.bold,bgMagenta.bold -n build,test 'npm run build -- --watch' 'npm run test -- --watchAll'",
-    "test": "jest"
+    "test": "jest",
+    "semantic-release": "semantic-release"
   },
   "author": "MOL Ads <MOLAds@mailonline.co.uk>",
   "license": "MIT",
@@ -21,6 +22,11 @@
     "ts-jest": "^23.10.5",
     "tslint": "^5.12.1",
     "tslint-config-standard": "^8.0.1",
-    "typescript": "^3.3.3"
+    "typescript": "^3.3.3",
+    "semantic-release": "^15.13.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johngeorgewright/state-middleware-manager.git"
   }
 }

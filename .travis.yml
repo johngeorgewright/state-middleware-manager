@@ -1,5 +1,10 @@
 language: node_js
 
+node_js:
+  - lts/carbon
+  - lts/dubnium
+  - stable
+
 before_install:
   - '[[ $(node -v) =~ ^v9.*$ ]] || npm install -g npm@latest'
   - npm install -g greenkeeper-lockfile@1
@@ -17,6 +22,14 @@ script:
 after_script:
   - greenkeeper-lockfile-upload
 
-env:
-  global:
-    secure: B5vysNSuKEkhD4804dnY5qKt+ZB1kwSHH7alf4EMC/DHgEyhjtpZd6TL2SNh0PrMFqhGGsKbzxvH5PLJRKYJGSliLiWeIQdF41nIqv8NhixeHeRp3gFaXlzXFgu9YhGH/ns3G5PoqsWVNi+DXkDAVDbiKZPuxkZxP/ceohKPSHI7+P6b7Tg9qBIEa3B7kzhKFB+DeAgrE8UTH+1kGLiVaem5X1vD6qgdp67/Of77RumMqtGka/uhbDvpPDg4Y2g1DXzvCZcOhk9dy+H7UkscuoYpNpmSXe2wLmxSlIgLW40J8A8O3bZEuFp0PZ+e4UcBHYXlSVAWVqQ2X4G8wwS9yuurMagGBFkR+ejylLMlKdC5JO8YsMzGMpstKwJAsIZUE9rz0R4vvfbd0kgTvkCtY+gRzrZG0oFfWMOmjw/kFIOcKlXOhpAsAMGC36zbljK7z8RorWZu83i7d78J4sTc9o5d7T/5iVWVU2lzPh3v0GS7KEKflXdn0ruRDNfceJdFsXmMoQFCus1U6AvKmSYUtcgK5d9assU6RiI2LV14/jpjfAyzbu0arAhCRWrB8fcRcILN3xpCB01Z0xBabPpPhftiD13CV5vNbdfKNToMzHTKecJ162xmh9aYWs7GjClLSblnow1gl4pBI/ELIs9jZOv81KdIMKQ/nKbt4IIF7JQ=
+jobs:
+  include:
+    - stage: deploy
+      node_js: lts/*
+      deploy:
+        provider: script
+        skip_cleanup: true
+        on:
+          branch: master
+        script:
+          - npm run semantic-release
