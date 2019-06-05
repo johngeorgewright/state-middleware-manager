@@ -16,14 +16,14 @@
   "author": "MOL Ads <MOLAds@mailonline.co.uk>",
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "^24.0.0",
+    "@types/jest": "^24.0.13",
     "concurrently": "^4.1.0",
-    "jest": "^24.1.0",
+    "jest": "^24.8.0",
     "semantic-release": "^15.13.14",
     "ts-jest": "^24.0.2",
-    "tslint": "^5.12.1",
+    "tslint": "^5.17.0",
     "tslint-config-standard": "^8.0.1",
-    "typescript": "^3.3.3"
+    "typescript": "^3.5.1"
   },
   "repository": {
     "type": "git",
