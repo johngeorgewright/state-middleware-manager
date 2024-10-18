@@ -1,5 +1,5 @@
 import { timeout } from './async.js'
-import reducer from '../../src/reducer.js'
+import reducer from '../../src/compose.js'
 import accumulator from '../../src/accumulator.js'
 import { Middleware } from '../../src/types.js'
 import { expect, it, vi } from 'vitest'
