@@ -2,12 +2,10 @@
   "name": "state-middleware-manager",
   "version": "0.0.0-development",
   "description": "State accumulating/reducing middleware manager",
-  "main": "dist/index.js",
+  "module": "dist/index.js",
   "type": "module",
   "scripts": {
-    "build": "npm run clean && tsc && npm run build:common",
-    "build:common": "tsc --project tsconfig.common.json > /dev/null; npm run build:covertcommonext",
-    "build:covertcommonext": "renamer --force --find '/\\.(j|t)s/' --replace '.c$1s' dist/common/**/*",
+    "build": "npm run clean && tsc",
     "clean": "rimraf dist",
     "prepare": "husky",
     "test": "vitest test"
@@ -24,7 +22,7 @@
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
     "prettier": "^3.3.3",
-    "renamer": "^5.0.2",
+    "rimraf": "^6.0.1",
     "semantic-release": "^24.1.2",
     "typescript": "^5.6.3",
     "vite-node": "^2.1.3",
