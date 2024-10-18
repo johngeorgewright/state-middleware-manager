@@ -1,0 +1,36 @@
+name: Release
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  publish-test:
+    uses: ./.github/workflows/pull-request.yml
+
+  publish-npm:
+    name: NPM
+    needs: [publish-test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT }}
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: NPM
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Release
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
