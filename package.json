@@ -2,6 +2,7 @@
   "name": "state-middleware-manager",
   "version": "2.0.0",
   "description": "State accumulating/reducing middleware manager",
+  "main": "dist/index.js",
   "module": "dist/index.js",
   "type": "module",
   "scripts": {
