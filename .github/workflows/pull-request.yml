@@ -1,0 +1,30 @@
+name: Pull Request
+
+on:
+  pull_request:
+  workflow_call:
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: NPM
+        run: npm ci
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npx tsc --noEmit
