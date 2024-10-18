@@ -1,14 +1,20 @@
-import { Middleware } from './types'
+import { Middleware } from './types.js'
 
 export interface State {
   [key: string]: any
 }
 
-export default (middleware: Middleware<State>[] = [], middlewareArgs: any[] = []) =>
+export default (
+    middleware: Middleware<State>[] = [],
+    middlewareArgs: any[] = [],
+  ) =>
   (state: State = {}): Promise<State> => {
     let index = -1
 
-    const dispatch = async (i: number, nextState: State = {}): Promise<State> => {
+    const dispatch = async (
+      i: number,
+      nextState: State = {},
+    ): Promise<State> => {
       if (i <= index) {
         throw new Error('next() called multiple times')
       }

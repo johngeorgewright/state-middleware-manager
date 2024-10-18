@@ -1,4 +1,4 @@
 export const timeout = (ms: number): Promise<void> =>
-  new Promise(resolve => {
+  new Promise((resolve) => {
     setTimeout(resolve, ms)
   })

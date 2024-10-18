@@ -1,7 +1,8 @@
-import { timeout } from './async'
-import reducer from '../reducer'
-import accumulator from '../accumulator'
-import { Middleware } from '../types'
+import { timeout } from './async.js'
+import reducer from '../../src/reducer.js'
+import accumulator from '../../src/accumulator.js'
+import { Middleware } from '../../src/types.js'
+import { expect, it, vi } from 'vitest'
 
 interface State {
   foo?: any
@@ -9,8 +10,8 @@ interface State {
 
 export default function (compose: typeof reducer | typeof accumulator) {
   it('waits until all middleware has resolved', async () => {
-    const spyA = jest.fn()
-    const spyB = jest.fn()
+    const spyA = vi.fn()
+    const spyB = vi.fn()
 
     const middleware: Middleware<State>[] = [
       async (_, next) => {
@@ -22,7 +23,7 @@ export default function (compose: typeof reducer | typeof accumulator) {
         await timeout(10)
         spyB()
         return next()
-      }
+      },
     ]
 
     await compose<State>(middleware)({})
@@ -32,8 +33,8 @@ export default function (compose: typeof reducer | typeof accumulator) {
   })
 
   it('runs middleware in order', () => {
-    const spyA = jest.fn()
-    const spyB = jest.fn()
+    const spyA = vi.fn()
+    const spyB = vi.fn()
 
     const middleware: Middleware<State>[] = [
       async (_, next) => {
@@ -47,15 +48,15 @@ export default function (compose: typeof reducer | typeof accumulator) {
         await timeout(10)
         spyB()
         return next()
-      }
+      },
     ]
 
     return compose<State>(middleware)({})
   })
 
   it('can change order by calling next early', async () => {
-    const spyA = jest.fn()
-    const spyB = jest.fn()
+    const spyA = vi.fn()
+    const spyB = vi.fn()
 
     const middleware: Middleware<State>[] = [
       async (_, next) => {
@@ -68,7 +69,7 @@ export default function (compose: typeof reducer | typeof accumulator) {
         expect(spyA).not.toHaveBeenCalled()
         spyB()
         return next()
-      }
+      },
     ]
 
     await compose<State>(middleware)({})
@@ -78,7 +79,7 @@ export default function (compose: typeof reducer | typeof accumulator) {
 
   it('passes a set of arguments to each middleware', () => {
     const arg1 = {}
-    const arg2 = jest.fn()
+    const arg2 = vi.fn()
 
     const middleware: Middleware<State>[] = [
       (_, next, $1, $2) => {
@@ -90,7 +91,7 @@ export default function (compose: typeof reducer | typeof accumulator) {
         expect($1).toBe(arg1)
         expect($2).toBe(arg2)
         return next()
-      }
+      },
     ]
 
     return compose<State>(middleware, [arg1, arg2])({})
@@ -101,7 +102,7 @@ export default function (compose: typeof reducer | typeof accumulator) {
       (state, next) => {
         expect(state).toEqual({ foo: 'bar' })
         return next()
-      }
+      },
     ]
 
     return compose<State>(middleware)({ foo: 'bar' })
