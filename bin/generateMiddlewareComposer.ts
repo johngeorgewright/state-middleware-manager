@@ -25,7 +25,6 @@ ${joinLines(
     ),
   )}
 >(
-  initState: O0,
   ${joinLines(
     range(i + 1).map(
       (i) =>
@@ -33,7 +32,7 @@ ${joinLines(
   middleware${i - 1}: Middleware<O${i - 1}, O${i}>,`,
     ),
   )}
-): Promise<O${i + 1}>
+): (initState: O0) => Promise<O${i + 1}>
 `,
   ),
 )}

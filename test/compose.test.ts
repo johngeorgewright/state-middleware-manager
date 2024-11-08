@@ -13,8 +13,7 @@ describe('reducer', () => {
     const spyA = vi.fn()
     const spyB = vi.fn()
 
-    await compose(
-      {} as State,
+    const fn = compose(
       async (state, next) => {
         await timeout(10)
         spyA()
@@ -27,6 +26,8 @@ describe('reducer', () => {
       },
     )
 
+    await fn({})
+
     expect(spyA).toHaveBeenCalled()
     expect(spyB).toHaveBeenCalled()
   })
@@ -35,8 +36,7 @@ describe('reducer', () => {
     const spyA = vi.fn()
     const spyB = vi.fn()
 
-    return compose(
-      {} as State,
+    const fn = compose(
       async (state, next) => {
         await timeout(0)
         spyA()
@@ -50,14 +50,15 @@ describe('reducer', () => {
         await next(state)
       },
     )
+
+    return fn({})
   })
 
   it('can change order by calling next early', async () => {
     const spyA = vi.fn()
     const spyB = vi.fn()
 
-    await compose(
-      {} as State,
+    const fn = compose(
       async (state, next) => {
         await next(state)
         expect(spyB).toHaveBeenCalled()
@@ -70,12 +71,13 @@ describe('reducer', () => {
       },
     )
 
+    await fn({})
+
     expect(spyA).toHaveBeenCalled()
   })
 
-  it("overrides the state with whatever's passed to next()", () => {
-    return compose(
-      'start',
+  it("overrides the state with whatever's passed to next()", () =>
+    compose(
       (state, next) => {
         expect(state).toBe('start')
         return next({ foo: 'bar' })
@@ -88,6 +90,5 @@ describe('reducer', () => {
         expect(state).toEqual({ mung: 'face' })
         return next(state)
       },
-    )
-  })
+    )('start'))
 })
