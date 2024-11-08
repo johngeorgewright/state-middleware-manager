@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { compose, Middleware } from '../src/index.js'
+import { compose } from '../src/index.js'
 import { timeout } from './__helpers__/async.js'
 
 interface State {
@@ -74,13 +74,13 @@ describe('reducer', () => {
   })
 
   it("overrides the state with whatever's passed to next()", () => {
-    const a: Middleware<unknown, { foo: string }> = (_, next) =>
-      next({ foo: 'bar' })
-
     return compose(
-      null,
-      a,
-      (state: { foo: string }, next) => {
+      'start',
+      (state, next) => {
+        expect(state).toBe('start')
+        return next({ foo: 'bar' })
+      },
+      (state, next) => {
         expect(state).toEqual({ foo: 'bar' })
         return next({ mung: 'face' })
       },

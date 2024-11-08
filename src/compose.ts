@@ -20,6 +20,6 @@ export const compose: MiddlewareComposer = async (
     await middleware[i](state, (state) => dispatch(i + 1, state))
   }
 
-  await dispatch(0)
+  await dispatch(0, state)
   return state
 }
