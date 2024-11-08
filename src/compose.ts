@@ -1,25 +1,24 @@
 import { Middleware } from './Middleware.js'
 import { MiddlewareComposer } from './MiddlewareComposer.js'
 
-export const compose: MiddlewareComposer = async (
-  state: unknown,
-  ...middleware: Middleware<unknown, unknown>[]
-) => {
-  if (middleware.length === 0) return state
+export const compose: MiddlewareComposer =
+  (...middleware: Middleware<unknown, unknown>[]) =>
+  async (state: unknown) => {
+    if (middleware.length === 0) return state
 
-  let index = -1
+    let index = -1
 
-  const dispatch = async (i: number, nextState?: unknown): Promise<void> => {
-    if (i <= index) throw new Error('next() called multiple times')
+    const dispatch = async (i: number, nextState?: unknown): Promise<void> => {
+      if (i <= index) throw new Error('next() called multiple times')
 
-    state = nextState
-    index = i
+      state = nextState
+      index = i
 
-    if (i === middleware.length) return
+      if (i === middleware.length) return
 
-    await middleware[i](state, (state) => dispatch(i + 1, state))
+      await middleware[i](state, (state) => dispatch(i + 1, state))
+    }
+
+    await dispatch(0, state)
+    return state
   }
-
-  await dispatch(0)
-  return state
-}
