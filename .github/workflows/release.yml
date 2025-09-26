@@ -34,10 +34,12 @@ jobs:
         run: npm run build
 
       - name: Release
-        run: npx semantic-release
+        uses: cycjimmy/semantic-release-action@v5
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        with:
+          extra_plugins: '@semantic-release/git'
 
       - name: Update develop
         run: |
